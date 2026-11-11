@@ -5,23 +5,25 @@ Methodology and comparison: https://mycelora.ai/benchmarks
 
 | | BEAM 100K | BEAM 1M |
 |---|---|---|
-| Score (mean of the ten ability means) | **75.6%** | **73.6%** |
-| Questions scored 0.5 or more | 85.0% | 83.2% |
-| Mycelora version | production of 2026-11-05 | production of 2026-11-05 (run 2026-11-07 to 2026-11-09) |
-| Conversations | 17 of 20: 2, 3, 4, 6 to 13, 15 to 20 | 17 of 35: 18 to 35, except 22 |
-| Questions | 340 | 340 |
+| Score (mean of the ten ability means) | **75.6%** | **74.5%** |
+| Questions scored 0.5 or more | 85.0% | 82.7% |
+| Mycelora version | production of 2026-11-05 | production of 2026-11-05 (run 2026-11-07 to 2026-11-11), with three technical fixes of 2026-11-09 for 18 conversations |
+| Conversations | 17 of 20: 2, 3, 4, 6 to 13, 15 to 20 | all 35 |
+| Questions | 340 | 700 |
 | Answer model | Claude Opus 5.5, no tools | Claude Opus 5.5, no tools |
 | Judge | gpt-5, Mem0's BEAM judge prompt | gpt-5, Mem0's BEAM judge prompt |
 
-Both runs measure the same version of Mycelora. They are not averaged together. The 1M results previously published
-here (production of 2026-10-27, 66.1%) are replaced by this run and remain in the repository history.
+Both runs measure the same version of Mycelora. They are not averaged together. Earlier 1M publications (production of
+2026-10-27, 66.1%; first 17 conversations of this run, 73.6%) remain in the repository history.
 
 - **100K:** conversations 1, 5 and 14 were used for tuning and are excluded from the score.
-- **1M:** the same 17 conversations as the earlier 1M publication (18 to 35, except 22), run three at a time with
-  identical settings. Incidents: 3 history batches out of about 11,000 could not be stored because the extraction
+- **1M:** all 35 conversations, run three at a time with identical settings; none was used for tuning.
+  Conversations 18 to 35 except 22 ran first (2026-11-07 to 2026-11-09); conversations 1 to 17 and 22 ran next
+  (2026-11-09 to 2026-11-11) with three technical fixes of 2026-11-09: tolerant reading of a malformed answer from the
+  extraction model, linking each memory to its thread, sorting memories at session close. Incidents in the first 17: 3 history batches out of about 11,000 could not be stored because the extraction
   model returned an unreadable answer (conversations 24, 27 and 34); the batch of conversation 34 was re-injected before
   the questions, the other two are missing. Conversations 30 and 35 were resumed, without re-injection, after an
-  unreadable answer from the model that closes each session.
+  unreadable answer from the model that closes each session. No history batch was lost in the next 18.
 
 Judge prompt: [mem0ai/memory-benchmarks](https://github.com/mem0ai/memory-benchmarks), `benchmarks/beam`.
 
@@ -40,7 +42,7 @@ sees the served context.
 ## Scoring
 
 Each rubric criterion is scored 0, 0.5 or 1 by the judge, a question scores the mean of its criteria, each ability
-scores the mean of its 34 questions, and the overall score is the mean of the ten abilities.
+scores the mean of its questions (34 at 100K, 70 at 1M), and the overall score is the mean of the ten abilities.
 
 ## Files
 
