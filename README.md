@@ -39,6 +39,27 @@ Each session of the conversation is sent to Mycelora and closed like a real work
 answer model gets Mycelora's opening block for the thread followed by its recall for the question. The judge never
 sees the served context.
 
+## What the benchmark serves, what the product serves
+
+In the benchmark, every question is asked in a fresh thread, as the protocol requires. So each time the answer model
+receives Mycelora's opening block (the state of the project), then the recall of memories for that question. The size
+of this context is published per question in this repository: a median of 41,300 characters at 100K and 79,000 at 1M.
+At 1M, the opening block accounts for 79% of it.
+
+In the product, a thread is opened once. The opening block is served at that point, then each question only adds its
+recall. We measured this by replaying three 1M benchmark conversations as a single thread of
+20 questions, with the same memories:
+
+| | Benchmark: 20 independent questions | One thread: the same 20 questions |
+|---|---|---|
+| Opening block | served 20 times | served once: 31,000 to 35,000 tokens |
+| Context per question | 36,000 to 42,000 tokens | 5,600 to 7,200 tokens added |
+| Context served for the 20 questions | 730,000 to 840,000 tokens | 155,000 to 176,000 tokens |
+
+Tokens as counted by the API of the answer model (Claude Opus 5.5). As in any conversation, the model then rereads
+the thread history at each turn. On these three conversations, the mean score is 0.754 in the benchmark and 0.721 in
+one thread: a gap within measurement noise. This replay is not part of the published score.
+
 ## Scoring
 
 Each rubric criterion is scored 0, 0.5 or 1 by the judge, a question scores the mean of its criteria, each ability
