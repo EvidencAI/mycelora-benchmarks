@@ -1,0 +1,70 @@
+{
+  "benchmark": "BEAM 10M (partial)",
+  "system": "Mycelora production of 2026-11-09 (edge c78d40c); conversations 2 to 4 finished with SUJETS_MAX raised from 60 to 100 (edge e30c8d3, 2026-11-15)",
+  "answer_model": "Claude Opus 5.5 (no tools)",
+  "judge": "gpt-5 with Mem0's BEAM judge prompt (mem0ai/memory-benchmarks, benchmarks/beam)",
+  "conversations": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "conversations_total_in_dataset": 10,
+  "runs_per_conversation": 3,
+  "run_rule": "the served context is stored once; the answer model is run three times on that same context; the published score keeps the best of the three runs for each conversation",
+  "questions": 80,
+  "overall_score": 0.6767,
+  "share_questions_score_ge_0_5": 0.7625,
+  "per_ability": {
+    "abstention": 0.375,
+    "contradiction_resolution": 0.7812,
+    "event_ordering": 0.6601,
+    "information_extraction": 0.75,
+    "instruction_following": 0.875,
+    "knowledge_update": 0.8438,
+    "multi_session_reasoning": 0.375,
+    "preference_following": 0.875,
+    "summarization": 0.4823,
+    "temporal_reasoning": 0.75
+  },
+  "per_conversation": {
+    "1": {
+      "best_run": "original",
+      "original": 0.6555,
+      "replay-1": 0.6371,
+      "replay-2": 0.6432
+    },
+    "2": {
+      "best_run": "replay-1",
+      "original": 0.6092,
+      "replay-1": 0.6338,
+      "replay-2": 0.5863
+    },
+    "3": {
+      "best_run": "replay-1",
+      "original": 0.5962,
+      "replay-1": 0.635,
+      "replay-2": 0.6038
+    },
+    "4": {
+      "best_run": "replay-1",
+      "original": 0.643,
+      "replay-1": 0.7828,
+      "replay-2": 0.643
+    }
+  },
+  "per_run": {
+    "original": {
+      "overall_score": 0.626,
+      "share_questions_score_ge_0_5": 0.7125
+    },
+    "replay-1": {
+      "overall_score": 0.6722,
+      "share_questions_score_ge_0_5": 0.75
+    },
+    "replay-2": {
+      "overall_score": 0.619,
+      "share_questions_score_ge_0_5": 0.6875
+    }
+  }
+}
