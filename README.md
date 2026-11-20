@@ -3,13 +3,13 @@
 Raw answers and judge verdicts behind Mycelora's published BEAM scores.
 Methodology and comparison: https://mycelora.ai/benchmarks
 
-| | BEAM 100K | BEAM 1M | BEAM 10M (partial) |
+| | BEAM 100K | BEAM 1M | BEAM 10M |
 |---|---|---|---|
-| Score (mean of the ten ability means) | **75.6%** | **74.5%** | **65.7%** |
-| Questions scored 0.5 or more | 85.0% | 82.7% | 71.4% |
-| Mycelora version | production of 2026-11-05 | production of 2026-11-05 (run 2026-11-07 to 2026-11-11), with three technical fixes of 2026-11-09 for 18 conversations | production of 2026-11-09 (run 2026-11-11 to 2026-11-17) |
-| Conversations | 17 of 20: 2, 3, 4, 6 to 13, 15 to 20 | all 35 | 1 to 7 of 10 so far |
-| Questions | 340 | 700 | 140 |
+| Score (mean of the ten ability means) | **75.6%** | **74.5%** | **63.2%** |
+| Questions scored 0.5 or more | 85.0% | 82.7% | 68.5% |
+| Mycelora version | production of 2026-11-05 | production of 2026-11-05 (run 2026-11-07 to 2026-11-11), with three technical fixes of 2026-11-09 for 18 conversations | production of 2026-11-09 (run 2026-11-11 to 2026-11-19) |
+| Conversations | 17 of 20: 2, 3, 4, 6 to 13, 15 to 20 | all 35 | all 10 |
+| Questions | 340 | 700 | 200 |
 | Runs of the answer model | one | one | three on the same served context, best kept per conversation |
 | Answer model | Claude Opus 5.5, no tools | Claude Opus 5.5, no tools | Claude Opus 5.5, no tools |
 | Judge | gpt-5, Mem0's BEAM judge prompt | gpt-5, Mem0's BEAM judge prompt | gpt-5, Mem0's BEAM judge prompt |
@@ -17,19 +17,28 @@ Methodology and comparison: https://mycelora.ai/benchmarks
 Both runs measure the same version of Mycelora. They are not averaged together. Earlier 1M publications (production of
 2026-10-27, 66.1%; first 17 conversations of this run, 73.6%) remain in the repository history.
 
-- **10M (partial):** conversations 1 to 7 of 10; the others are added as they finish. None was used for tuning.
+- **10M:** all 10 conversations. None was used for tuning.
   For each question, the context served by Mycelora was stored once; the answer model was then run three times on that
   same context (`original`, `replay-1`, `replay-2`), each run judged by gpt-5. The score keeps, for each conversation,
   the run with the best score: conversation 1 `original` (65.6%), 2 `replay-1` (63.4%), 3 `replay-1` (63.5%),
-  4 `replay-1` (78.3%), 5 `replay-1` (54.5%), 6 `original` (60.8%), 7 `replay-1` (73.6%). Full runs over the seven
-  conversations: `original` 61.2%, `replay-1` 64.4%, `replay-2` 60.7%.
+  4 `replay-1` (78.3%), 5 `replay-1` (54.5%), 6 `original` (60.8%), 7 `replay-1` (73.6%), 8 `replay-1` (49.4%),
+  9 `original` (55.8%), 10 `original` (66.9%). Full runs over the ten conversations: `original` 59.6%,
+  `replay-1` 61.5%, `replay-2` 58.5%.
   All three runs are in `results/10m/results.jsonl` (`run`, `best_run`). Protocol deviations: the limit on the number
   of topics in a codex went from 60 to 100 on 2026-11-15 at 02:27 CET, from day 82 of conversation 2, day 72 of
   conversation 3 and day 93 of conversation 4 (conversation 1 ran entirely under 60); conversation 4 ran on the route
   used by real accounts, where about 11% of extraction calls fell back to mistral-small, and 3 of its history batches
   were re-injected out of order after an extraction error; sessions whose content exceeds about 550,000 characters
-  were occasionally refused by the session-closing model and retried. Conversations 5 (second run), 6 and 7 closed all
-  their sessions under the limit of 100 topics. Conversation 5 was run twice end to end (history injected, sessions
+  were occasionally refused by the session-closing model and retried. Conversations 5 (second run) and 6 to 10 closed all
+  their sessions under the server limit of 100 topics. For conversations 1 to 9 the session-closing model was still
+  told a limit of 60 topics (no new topic from 55); for conversation 10 it was told 100 (no new topic from 95). In
+  conversation 8 the codex reached 55 topics on day 63 and no topic was created after that; it ended at about 50,000
+  characters, against 86,000 to 96,000 for the other conversations. The sessions of conversation 8 were replayed on
+  2026-11-19 on the same injected memory with the 100-topic rule: that replay scored 45.3%, 51.0% and 48.5% over three
+  answer-model runs and is not published; only the first run is scored. Conversation 10 ran on the route used by real
+  accounts, where about 20% of extraction calls fell back to mistral-small. The injection of conversation 9 was paused
+  on 2026-11-16 and resumed on 2026-11-17 in the same memory space. While closing the sessions of conversation 10, the
+  server returned an HTTP 500 four times; each time the run was resumed in the same memory space. Conversation 5 was run twice end to end (history injected, sessions
   closed, questions answered); the first run (2026-11-10 to 2026-11-12) scored 50.7% on its original answers and is not
   published; only the second run (2026-11-14 to 2026-11-16) is scored. In conversation 7, no message of the first batch
   carries a date: that session is dated the day before the next dated batch (2020-03-04). Conversations 6 and 7 were
@@ -100,7 +109,7 @@ The served context itself is not published.
 ## Known limits
 
 - One run per size at 100K and 1M. Two identical runs differ by 1 to 5 points overall. At 10M, three runs of the
-  answer model on the same context range from 60.7% to 64.4% overall.
+  answer model on the same context range from 58.5% to 61.5% overall.
 - English conversations generated by BEAM.
 - The scores measure Mycelora with Claude Opus 5.5; another answer model would give other scores.
 

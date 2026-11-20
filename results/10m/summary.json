@@ -1,6 +1,6 @@
 {
-  "benchmark": "BEAM 10M (partial)",
-  "system": "Mycelora production of 2026-11-09 (edge c78d40c); SUJETS_MAX raised from 60 to 100 on 2026-11-15 (edge e30c8d3): during the closing of conversations 2 to 4, and for all sessions of conversations 5 (second run), 6 and 7",
+  "benchmark": "BEAM 10M",
+  "system": "Mycelora production of 2026-11-09 (edge c78d40c); SUJETS_MAX raised from 60 to 100 on 2026-11-15 (edge e30c8d3): during the closing of conversations 2 to 4, and for all sessions of conversations 5 (second run) and 6 to 10",
   "answer_model": "Claude Opus 5.5 (no tools)",
   "judge": "gpt-5 with Mem0's BEAM judge prompt (mem0ai/memory-benchmarks, benchmarks/beam)",
   "conversations": [
@@ -10,25 +10,28 @@
     4,
     5,
     6,
-    7
+    7,
+    8,
+    9,
+    10
   ],
   "conversations_total_in_dataset": 10,
   "runs_per_conversation": 3,
   "run_rule": "the served context is stored once; the answer model is run three times on that same context; the published score keeps the best of the three runs for each conversation",
-  "questions": 140,
-  "overall_score": 0.6567,
-  "share_questions_score_ge_0_5": 0.7143,
+  "questions": 200,
+  "overall_score": 0.6317,
+  "share_questions_score_ge_0_5": 0.685,
   "per_ability": {
-    "abstention": 0.5,
-    "contradiction_resolution": 0.75,
-    "event_ordering": 0.5908,
-    "information_extraction": 0.7857,
-    "instruction_following": 0.875,
-    "knowledge_update": 0.8393,
-    "multi_session_reasoning": 0.2286,
-    "preference_following": 0.9107,
-    "summarization": 0.5687,
-    "temporal_reasoning": 0.5179
+    "abstention": 0.6,
+    "contradiction_resolution": 0.725,
+    "event_ordering": 0.5411,
+    "information_extraction": 0.7625,
+    "instruction_following": 0.8375,
+    "knowledge_update": 0.7625,
+    "multi_session_reasoning": 0.2642,
+    "preference_following": 0.8042,
+    "summarization": 0.5331,
+    "temporal_reasoning": 0.4875
   },
   "per_conversation": {
     "1": {
@@ -72,20 +75,38 @@
       "original": 0.66,
       "replay-1": 0.7362,
       "replay-2": 0.7188
+    },
+    "8": {
+      "best_run": "replay-1",
+      "original": 0.4525,
+      "replay-1": 0.4942,
+      "replay-2": 0.4223
+    },
+    "9": {
+      "best_run": "original",
+      "original": 0.5575,
+      "replay-1": 0.5062,
+      "replay-2": 0.5071
+    },
+    "10": {
+      "best_run": "original",
+      "original": 0.6692,
+      "replay-1": 0.6404,
+      "replay-2": 0.6687
     }
   },
   "per_run": {
     "original": {
-      "overall_score": 0.6119,
-      "share_questions_score_ge_0_5": 0.6857
+      "overall_score": 0.5963,
+      "share_questions_score_ge_0_5": 0.665
     },
     "replay-1": {
-      "overall_score": 0.6439,
-      "share_questions_score_ge_0_5": 0.7071
+      "overall_score": 0.6148,
+      "share_questions_score_ge_0_5": 0.675
     },
     "replay-2": {
-      "overall_score": 0.6067,
-      "share_questions_score_ge_0_5": 0.6929
+      "overall_score": 0.5845,
+      "share_questions_score_ge_0_5": 0.65
     }
   }
 }
